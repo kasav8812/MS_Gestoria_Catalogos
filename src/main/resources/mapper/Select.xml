@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.totalplay.catalogos.dao.SelectDao">
+
+	<select id="getStatus" resultType="StatsuVo">
+		SELECT 
+   			DUMMY MESSAGE,
+    		TO_CHAR(SYSDATE, 'DD/MM/YYYY') DATES
+		FROM DUAL
+	</select>
+	<select id="getEstados" resultType="CatalogoModel">
+		SELECT 
+		    TPGCEID ID,
+		    ESTADO DESCRIPCION,
+		    DESCRIPCION COMENTARIO,
+		    ENABLED
+		FROM TPGC_ESTADOS
+			<if test="enabledcat == 1">
+		   		WHERE ENABLED = 1
+		 	</if>
+	</select>
+	<select id="getUnidadMedida" resultType="CatalogoModel">
+		SELECT 
+		    TPGCUMID ID,
+		    UMEDIDA DESCRIPCION,
+		    DESCRIPCION COMENTARIO,
+		    ENABLED
+		FROM TPGC_MEDIDA
+			<if test="enabledcat == 1">
+		    	WHERE ENABLED = 1
+		    </if>
+	</select>
+	<select id="getPermiso" resultType="CatalogoModel">
+		SELECT 
+		    TPGCPID ID,
+		    PERMISO DESCRIPCION,
+		    DESCRIPCION COMENTARIO,
+		    ENABLED
+		FROM TPGC_PERMISO
+			<if test="enabledcat == 1">
+		    	WHERE ENABLED = 1
+		    </if>
+	</select>
+	<select id="getArea" resultType="CatalogoModel">
+		SELECT 
+		    TPGCAID ID,
+		    AREA DESCRIPCION,
+		    DESCRIPCION COMENTARIO,
+		    ENABLED
+		FROM TPGC_AREA
+			<if test="enabledcat == 1">
+		    	WHERE ENABLED = 1
+		    </if>
+	</select>
+	<select id="getSolicitud" resultType="CatalogoModel">
+		SELECT 
+		    TPGCSID ID,
+		    SOLICITUD DESCRIPCION,
+		    DESCRIPCION COMENTARIO,
+		    ENABLED
+		FROM TPGC_SOLICITUD
+			<if test="enabledcat == 1">
+		    	WHERE ENABLED = 1
+		    </if>
+	</select>
+	<select id="getCobertura" resultType="CatalogoModel">
+		SELECT 
+		    TPGCCID ID,
+		    COBERTURA DESCRIPCION,
+		    DESCRIPCION COMENTARIO,
+		    ENABLED
+		FROM TPGC_COBERTURA
+			<if test="enabledcat == 1">
+		    	WHERE ENABLED = 1
+		    </if>
+	</select>
+	<select id="getActividad" resultType="CatalogoModel">
+		SELECT 
+		    TPGCACID ID,
+		    ACTIVIDAD DESCRIPCION,
+		    DESCRIPCION COMENTARIO,
+		    ENABLED
+		FROM TPGC_ACTIVIDAD
+			<if test="enabledcat == 1">
+		    	WHERE ENABLED = 1
+		    </if>
+	</select>
+	
+	<select id="getUbicacion" resultType="CatalogoModel">
+		SELECT 
+		    TPGCUID ID,
+		    NAME DESCRIPCION
+		FROM TPGC_UBICACION 
+		    WHERE ENABLED = 1
+		    AND REFERENCEID IS NULL
+		ORDER BY TPGCUID ASC
+	</select>
+	<select id="getMunicipio" resultType="CatalogoModel">
+		SELECT  
+		    TPGCUID ID,
+		    NAME DESCRIPCION
+		FROM TPGC_UBICACION 
+		    WHERE ENABLED = 1
+		START WITH REFERENCEID = #{id}
+		    CONNECT BY PRIOR TPGCUID = REFERENCEID 
+		ORDER SIBLINGS BY TPGCUID ASC
+	</select>
+	<insert id="setArea" useGeneratedKeys="true" keyProperty="area.id" keyColumn="TPGCAID">
+		INSERT INTO TPGC_AREA(
+			TPGCAID,
+			AREA,
+			<if test="area.comentario != null">
+				DESCRIPCION,
+			</if>
+			CREATED
+		)VALUES(
+			STPGCAID.NEXTVAL,
+			#{area.descripcion},
+			<if test="area.comentario != null">
+				#{area.comentario},
+			</if>			
+			SYSDATE
+		)
+	</insert>
+	<update id="updArea">
+		UPDATE TPGC_AREA SET
+			<if test="area.descripcion != null">
+				AREA = #{area.descripcion},
+			</if>
+			<if test="area.activo != null">
+				ENABLED = #{area.activo},
+			</if>
+			<if test="area.comentario != null">
+			 DESCRIPCION = #{area.comentario},
+			</if>
+			MODIFIED = SYSDATE
+		WHERE TPGCAID = #{area.id}
+	</update>
+	
+	<update id="updEstado">
+		UPDATE TPGC_ESTADOS SET
+			<if test="estado.descripcion != null">
+		 		ESTADO = #{estado.descripcion},
+		 	</if>
+		 	<if test="estado.comentario != null">
+   		 		DESCRIPCION = #{estado.comentario},
+   		 	</if>
+			MODIFIED = SYSDATE
+		WHERE TPGCEID = #{estado.id}
+	</update>
+	<insert id="setPermiso" useGeneratedKeys="true" keyProperty="permiso.id" keyColumn="TPGCPID">
+		INSERT INTO TPGC_PERMISO(
+			TPGCPID,
+			PERMISO,
+			<if test="permiso.comentario != null">
+				DESCRIPCION,
+			</if>
+			CREATED
+		)VALUES(
+			STPGCPID.NEXTVAL,
+			#{permiso.descripcion},
+			<if test="permiso.comentario != null">
+				#{permiso.comentario},
+			</if>	
+			SYSDATE
+		)
+	</insert>
+	<update id="updPermiso">
+		UPDATE TPGC_PERMISO SET
+			<if test="permiso.descripcion != null">
+				PERMISO = #{permiso.descripcion},
+			</if>
+			<if test="permiso.activo != null">
+				ENABLED = #{permiso.activo},
+			</if>
+			<if test="permiso.comentario != null">
+			 DESCRIPCION = #{permiso.comentario},
+			</if>
+			MODIFIED = SYSDATE
+		WHERE TPGCPID = #{permiso.id}
+	</update>
+	<insert id="setUnidad" useGeneratedKeys="true" keyProperty="unidad.id" keyColumn="TPGCUMID">
+		INSERT INTO TPGC_MEDIDA(
+			TPGCUMID,
+			UMEDIDA,
+			<if test="unidad.comentario != null">
+				DESCRIPCION,
+			</if>	
+			CREATED
+		)VALUES(
+			STPGCUMID.NEXTVAL,
+			#{unidad.descripcion},
+			<if test="unidad.comentario != null">
+				#{unidad.comentario},
+			</if>
+			SYSDATE
+		)
+	</insert>
+	<update id="updUnidad">
+		UPDATE TPGC_MEDIDA SET
+			<if test="unidad.descripcion != null">
+				UMEDIDA = #{unidad.descripcion},
+			</if>
+			<if test="unidad.activo != null">
+				ENABLED = #{unidad.activo},
+			</if>
+			<if test="unidad.comentario != null">
+				 DESCRIPCION = #{unidad.comentario},
+			</if>
+			MODIFIED = SYSDATE
+		WHERE TPGCUMID = #{unidad.id}
+	</update>
+	
+	<insert id="setSolicitud" useGeneratedKeys="true" keyProperty="solicitud.id" keyColumn="TPGCSID">
+		INSERT INTO TPGC_SOLICITUD(
+			TPGCSID,
+			SOLICITUD,
+			<if test="solicitud.comentario != null">
+				DESCRIPCION,
+			</if>	
+			CREATED
+		)VALUES(
+			STPGCUMID.NEXTVAL,
+			#{solicitud.descripcion},
+			<if test="solicitud.comentario != null">
+				#{solicitud.comentario},
+			</if>
+			SYSDATE
+		)
+	</insert>
+	<update id="updSolicitud">
+		UPDATE TPGC_SOLICITUD SET
+			<if test="solicitud.descripcion != null">
+				SOLICITUD = #{solicitud.descripcion},
+			</if>
+			<if test="solicitud.activo != null">
+				ENABLED = #{solicitud.activo},
+			</if>
+			<if test="solicitud.comentario != null">
+				 DESCRIPCION = #{solicitud.comentario},
+			</if>
+			MODIFIED = SYSDATE
+		WHERE TPGCSID = #{solicitud.id}
+	</update>
+	
+	<insert id="setCobertura" useGeneratedKeys="true" keyProperty="cobertura.id" keyColumn="TPGCCID">
+		INSERT INTO TPGC_COBERTURA(
+			TPGCCID,
+			COBERTURA,
+			<if test="cobertura.comentario != null">
+				DESCRIPCION,
+			</if>	
+			CREATED
+		)VALUES(
+			STPGCUMID.NEXTVAL,
+			#{cobertura.descripcion},
+			<if test="cobertura.comentario != null">
+				#{cobertura.comentario},
+			</if>
+			SYSDATE
+		)
+	</insert>
+	<update id="updCobertura">
+		UPDATE TPGC_COBERTURA SET
+			<if test="cobertura.descripcion != null">
+				COBERTURA = #{cobertura.descripcion},
+			</if>
+			<if test="cobertura.activo != null">
+				ENABLED = #{cobertura.activo},
+			</if>
+			<if test="cobertura.comentario != null">
+				 DESCRIPCION = #{cobertura.comentario},
+			</if>
+			MODIFIED = SYSDATE
+		WHERE TPGCCID = #{cobertura.id}
+	</update>
+	
+	<insert id="setActividad" useGeneratedKeys="true" keyProperty="actividad.id" keyColumn="TPGCACID">
+		INSERT INTO TPGC_ACTIVIDAD(
+			TPGCACID,
+			ACTIVIDAD,
+			<if test="actividad.comentario != null">
+				DESCRIPCION,
+			</if>	
+			CREATED
+		)VALUES(
+			STPGCUMID.NEXTVAL,
+			#{actividad.descripcion},
+			<if test="actividad.comentario != null">
+				#{actividad.comentario},
+			</if>
+			SYSDATE
+		)
+	</insert>
+	<update id="updActividad">
+		UPDATE TPGC_ACTIVIDAD SET
+			<if test="actividad.descripcion != null">
+				ACTIVIDAD = #{actividad.descripcion},
+			</if>
+			<if test="actividad.activo != null">
+				ENABLED = #{actividad.activo},
+			</if>
+			<if test="actividad.comentario != null">
+				 DESCRIPCION = #{actividad.comentario},
+			</if>
+			MODIFIED = SYSDATE
+		WHERE TPGCACID = #{actividad.id}
+	</update>
+	
+</mapper>
