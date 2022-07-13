@@ -30,6 +30,12 @@ public interface SelectDao {
 	List<CatalogoModel> getActividad(@Param("enabledcat") Integer enabledcat);
 
 	List<CatalogoModel> getMunicipio(@Param("id") Integer id);
+	
+	List<CatalogoModel> getRegiones();
+	
+	
+	List<CatalogoModel> getEstadosByRegion(@Param("id") String id);
+
 
 	int setArea(@Param("area") CatalogoModel area);
 

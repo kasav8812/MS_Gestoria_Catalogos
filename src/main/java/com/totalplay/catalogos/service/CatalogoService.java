@@ -31,4 +31,12 @@ public class CatalogoService {
 		return selectDao.getMunicipio(id);
 	}
 	
+	public List<CatalogoModel> getRegiones() {
+		return selectDao.getRegiones();
+	}
+	
+	public List<CatalogoModel> getEstadosByRegion(String id) {
+		return selectDao.getEstadosByRegion(id);
+	}
+	
 }

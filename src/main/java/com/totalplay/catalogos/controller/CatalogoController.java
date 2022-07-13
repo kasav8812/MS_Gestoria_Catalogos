@@ -32,4 +32,14 @@ public class CatalogoController {
 	public ResponseEntity<List<CatalogoModel>> catalogos(@PathVariable(required = true, name = "id") Integer id) throws Exception {
 		return ResponseEntity.status(HttpStatus.OK).body(catalogoService.getMunicipio(id));
 	}
+	
+	@GetMapping("/regiones")
+	public ResponseEntity<List<CatalogoModel>> getRegiones() throws Exception {
+		return ResponseEntity.status(HttpStatus.OK).body(catalogoService.getRegiones());
+	}
+	
+	@GetMapping("/getEstadosByRegion/{id}")
+	public ResponseEntity<List<CatalogoModel>> getEstadosByRegion(@PathVariable (required = true, name = "id") String id) throws Exception {
+		return ResponseEntity.status(HttpStatus.OK).body(catalogoService.getEstadosByRegion(id));
+	}
 }

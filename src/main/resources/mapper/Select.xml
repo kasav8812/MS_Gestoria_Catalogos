@@ -307,4 +307,26 @@
 		WHERE TPGCACID = #{actividad.id}
 	</update>
 	
+	<select id="getRegiones" resultType="CatalogoModel">
+	  SELECT DISTINCT
+		    tpgcregionid id
+        FROM TPGC_UBICACION 
+		    WHERE ENABLED = 1
+		    AND REFERENCEID IS NULL
+		ORDER BY tpgcregionid ASC
+	</select>
+	
+	
+	<select id="getEstadosByRegion" resultType="CatalogoModel">
+	SELECT 
+		    tpgcregionid,
+            tpgcuid id,
+            NAME descripcion
+        FROM TPGC_UBICACION 
+		    WHERE ENABLED = 1
+		    AND REFERENCEID IS NULL AND tpgcregionid = #{id} 
+		ORDER BY tpgcregionid ASC
+	</select>
+	
+	
 </mapper>
