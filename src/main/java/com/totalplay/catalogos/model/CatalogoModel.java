@@ -14,9 +14,10 @@ public class CatalogoModel implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Integer id;
+	private String id;
 	private String descripcion;
 	private String comentario;
 	private boolean enabled;
 	private Integer activo;
+	private String tpgregion;
 }

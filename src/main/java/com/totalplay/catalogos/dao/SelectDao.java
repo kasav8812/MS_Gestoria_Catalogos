@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.totalplay.catalogos.model.CatalogoModel;
+
+import com.totalplay.catalogos.model.CentroCostosModel;
 import com.totalplay.catalogos.model.StatsuVo;
 
 @Mapper
@@ -32,6 +34,7 @@ public interface SelectDao {
 	List<CatalogoModel> getMunicipio(@Param("id") Integer id);
 	
 	List<CatalogoModel> getRegiones();
+	
 	
 	
 	List<CatalogoModel> getEstadosByRegion(@Param("id") String id);
@@ -62,4 +65,25 @@ public interface SelectDao {
 	public void setActividad(@Param("actividad") CatalogoModel actividad);
 
 	public void updActividad(@Param("actividad") CatalogoModel actividad);
+	
+	public List<CatalogoModel> getActividadesByReq(@Param("id") String id);
+	
+	public void updateEstadosRegion(@Param("cat") CatalogoModel cat);
+	
+	public void deleteEstado(@Param("cat")CatalogoModel cat);
+	
+	public void setRegionEdo(@Param("reg")CatalogoModel reg);
+
+	List<CatalogoModel> getAllMunicipios();
+
+	List<CentroCostosModel> getAllCC();
+	
+	public void setCC(@Param("cc")CentroCostosModel reg);
+
+	List<CentroCostosModel> getAllCCEnabled();
+
+	public void updateCC(@Param("cc")CentroCostosModel reg);
+
+	
+	
 }

@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-catalogos
+  namespace: default
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: ms-catalogos
+  template:
+    metadata:
+      labels:
+        app: ms-catalogos
+    spec:
+      hostNetwork: true
+      containers:
+        - name: ms-catalogos
+          image: swr.na-mexico-1.myhuaweicloud.com/ges-ms-prod/catalogos-service:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: ms-catalogos
+      imagePullSecrets:
+        - name: default-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ms-catalogos
+  namespace: default
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      name: ms-catalogos
+  type: NodePort
+  selector:
+    app: ms-catalogos
